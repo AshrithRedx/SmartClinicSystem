@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SymptomsAnalysisServiceImpl implements SymptomsAnalysisService {
@@ -17,18 +18,33 @@ public class SymptomsAnalysisServiceImpl implements SymptomsAnalysisService {
     }
 
     @Override
-    public List<String> getTopSpecialists(String symptomsText) {
-        String url = "http://localhost:5000/predict"; // Replace with your Flask server
-
+    public List<String> getTopSpecialists(String symptomsJson) {
+        RestTemplate restTemplate = new RestTemplate();
+    
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(symptomsJson, headers);
+    
+        ResponseEntity<Map> response = restTemplate.postForEntity(
+            "http://localhost:5000/predict",
+            entity,
+            Map.class
+        );
+    
+        List<String> recommendedSpecialists = new ArrayList<>();
+        List<Map<String, Object>> predictions = (List<Map<String, Object>>) response.getBody().get("top_predictions");
+    
+        for (Map<String, Object> prediction : predictions) {
+            List<String> specialists = (List<String>) prediction.get("specialists");
+            if (specialists != null && !specialists.isEmpty()) {
+                recommendedSpecialists.addAll(specialists);
+            }
+        }
+    
+        return recommendedSpecialists.stream()
+    .distinct()
+    .collect(Collectors.toList());
 
-        Map<String, String> body = new HashMap<>();
-        body.put("symptoms", symptomsText);
-
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
-
-        ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
-        return (List<String>) response.getBody().get("top_specialists");
     }
+    
 }
