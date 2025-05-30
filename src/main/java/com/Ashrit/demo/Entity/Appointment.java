@@ -21,15 +21,22 @@ public class Appointment {
     private String time;
 
     private String status; // BOOKED, RESCHEDULED, CANCELLED
+    @Lob
+    @Column(name = "prescription", columnDefinition = "TEXT")
+    private String prescription;
+
+
+
 
     public Appointment() {}
 
-    public Appointment(Long id, Doctor doctor, User patient, String time, String status) {
+    public Appointment(Long id, Doctor doctor, User patient, String time, String status, String prescription) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;
         this.time = time;
         this.status = status;
+        this.prescription = prescription;
     }
 
     // Getters and setters
@@ -53,4 +60,9 @@ public class Appointment {
     public String getStatus() { return status; }
 
     public void setStatus(String status) { this.status = status; }
+
+    public String getPrescription() { return prescription;}
+
+public void setPrescription(String prescription) {this.prescription = prescription;}
+
 }

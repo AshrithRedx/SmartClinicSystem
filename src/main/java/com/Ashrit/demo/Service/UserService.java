@@ -8,4 +8,5 @@ public interface UserService {
 
     // new method
     User findById(Long id);
+    User login(User user);
 }

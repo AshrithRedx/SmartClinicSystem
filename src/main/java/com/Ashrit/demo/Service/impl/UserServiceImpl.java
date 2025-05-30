@@ -29,8 +29,21 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+    @Override
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
     }
+    @Override
+    public User login(User user) {
+    Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+    if (existingUser.isPresent()) {
+        User dbUser = existingUser.get();
+        if (passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            return dbUser;
+        }
+    }
+    throw new RuntimeException("Invalid email or password");
+}
+
 }

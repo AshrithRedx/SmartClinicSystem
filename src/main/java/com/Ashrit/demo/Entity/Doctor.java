@@ -12,6 +12,7 @@ public class Doctor {
 
     private String specialization;
     private String bio;
+    private String name;
 
     // Store availability as a JSON string
     @Column(columnDefinition = "TEXT")
@@ -23,12 +24,13 @@ public class Doctor {
 
     public Doctor() {}
 
-    public Doctor(Long id, String specialization, String bio, String availabilitySlots, User user) {
+    public Doctor(Long id, String specialization, String bio, String availabilitySlots, User user,String name) {
         this.id = id;
         this.specialization = specialization;
         this.bio = bio;
         this.availabilitySlots = availabilitySlots;
         this.user = user;
+        this.name = name;
     }
 
     // Getters and setters
@@ -52,4 +54,12 @@ public class Doctor {
     public User getUser() { return user; }
 
     public void setUser(User user) { this.user = user; }
+
+    public String getName() {
+    return name;
+}
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

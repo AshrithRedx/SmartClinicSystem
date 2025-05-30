@@ -1,0 +1,22 @@
+package com.Ashrit.demo.Dto;
+
+public class PrescriptionDTO {
+    private Long appointmentId;
+    private String prescription;
+
+    public Long getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Long appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public String getPrescription() {
+        return prescription;
+    }
+
+    public void setPrescription(String prescription) {
+        this.prescription = prescription;
+    }
+}
